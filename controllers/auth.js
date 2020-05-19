@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const {connection} = require('../utils/db');
 
 const login = (req, res) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
@@ -20,7 +21,15 @@ const login = (req, res) => {
 };
 
 const signup = (req,res) => {
-
+  const {name, email, password} = req.body;
+  if (!name || !email || !password) {
+    res.status(400).send('Missing fields');
+  } else {
+    connection.query('INSERT INTO user(id, name, email, password) VALUES (0, ?, ?, ?)', [name, email, password], (err, results, fields) => {
+      if (err) res.status(500).send(err.code);
+      if (results) res.send({id: results.insertId });
+    });
+  }
 };
 
 module.exports = {
