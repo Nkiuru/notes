@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import {authenticated as auth} from './api';
 
 import Login from './views/Login';
 import Register from './views/Register';
@@ -23,13 +24,18 @@ const Main = styled.main`
 `;
 
 const App = () => {
+  const home = () => (!auth() ? <Redirect to="/" /> : <Home />);
+  const login = () => (auth() ? <Redirect to="/home" /> : <Login />);
+  const register = () => (auth() ? <Redirect to="/home" /> : <Register />);
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Main>
-        <Route path="/home" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
+        <Switch>
+          <Route path="/home" render={home} />
+          <Route path="/register" render={register} />
+          <Route path="/" render={login} />
+        </Switch>
       </Main>
     </BrowserRouter>
   );

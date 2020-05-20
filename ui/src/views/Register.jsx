@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
+import { register } from '../api';
+import { useHistory } from 'react-router';
 
 export const FlexColumn = styled.div`
   display: flex;
@@ -24,6 +26,7 @@ const CheckboxWrapper = styled.div`
 `;
 
 export default () => {
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -31,6 +34,9 @@ export default () => {
   const handleRegister = async e => {
     e.preventDefault();
     try {
+      const response = await register(email, name, password);
+      window.alert('User created');
+      history.push('/login');
     } catch (err) {
       console.log(err);
     }
