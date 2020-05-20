@@ -1,7 +1,7 @@
 const express = require('express');
 const db = require('./utils/db');
 const authRoutes = require('./routes/authRoutes');
-const homeRoutes = require('./routes/homeRoutes');
+const noteRoutes = require('./routes/noteRoutes');
 const passport = require('passport');
 const cors = require('cors');
 require('./utils/pass.js');
@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));// for parsing application/x-www
 app.use(express.static('public'));
 
 app.use('/auth', authRoutes);
-app.use('/home', passport.authenticate('jwt', { session: false }), homeRoutes);
+app.use('/notes', passport.authenticate('jwt', { session: false }), noteRoutes);
 
 
 

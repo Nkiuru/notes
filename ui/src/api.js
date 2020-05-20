@@ -58,7 +58,7 @@ export const getNotes = () => {
 export const getAllNotes = () => {
   const token = localStorage.getItem('token');
   const authorization = token ? `Bearer ${token}` : '';
-  return fetch('http://localhost:8000/notes', {
+  return fetch('http://localhost:8000/notes/all', {
     method: 'POST',
     headers: {
       authorization,
