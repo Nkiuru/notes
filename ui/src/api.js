@@ -42,7 +42,7 @@ export const getNotes = () => {
   const token = localStorage.getItem('token');
   const authorization = token ? `Bearer ${token}` : '';
   return fetch('http://localhost:8000/notes/my', {
-    method: 'POST',
+    method: 'GET',
     headers: {
       authorization,
       'Content-Type': 'application/json'
@@ -59,11 +59,30 @@ export const getAllNotes = () => {
   const token = localStorage.getItem('token');
   const authorization = token ? `Bearer ${token}` : '';
   return fetch('http://localhost:8000/notes/all', {
+    method: 'GET',
+    headers: {
+      authorization,
+      'Content-Type': 'application/json'
+    },
+  }).then(response => {
+    console.log(response);
+    return response.json();
+  }).catch(error => {
+    throw error;
+  });
+};
+
+export const addNote = (title, content) => {
+  const token = localStorage.getItem('token');
+  const authorization = token ? `Bearer ${token}` : '';
+  const body = { title, content };
+  return fetch('http://localhost:8000/notes', {
     method: 'POST',
     headers: {
       authorization,
       'Content-Type': 'application/json'
     },
+    body: JSON.stringify(body),
   }).then(response => {
     console.log(response);
     return response.json();
