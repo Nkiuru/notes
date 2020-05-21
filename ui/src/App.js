@@ -1,15 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
-import {authenticated as auth} from './api';
+import { authenticated as auth } from './api';
 
 import Login from './views/Login';
 import Register from './views/Register';
 import Home from './views/Home';
+import Admin from './views/Admin';
 
 const GlobalStyle = createGlobalStyle`
-
-
   body, h1, h2, h3, h4, p {
     margin: 0;
     padding: 0;
@@ -32,7 +31,8 @@ const App = () => {
       <GlobalStyle />
       <Main>
         <Switch>
-          <Route path="/home" render={home} />
+          <Route path="/home" component={Home} />
+          <Route path="/admin" component={Admin} />
           <Route path="/register" render={register} />
           <Route path="/" render={login} />
         </Switch>
