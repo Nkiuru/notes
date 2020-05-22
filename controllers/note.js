@@ -18,6 +18,13 @@ const getAllNotes = (req, res) => {
   }
 };
 
+const searchNotes = (req, res) => {
+    connection.query(`SELECT note.*, user.name AS author from note LEFT JOIN user ON note.userId = user.id WHERE note.userId = ${req.user.id} AND note.content LIKE '%${req.body.search}%'`, [], (err, results, fields) => {
+      if (err) res.status(500).send(err.code);
+      if (results) res.json(results);
+    });
+};
+
 const addNote = (req, res) => {
   const userId = req.user.id;
   const { title, content } = req.body;
@@ -35,4 +42,5 @@ module.exports = {
   getMyNotes,
   getAllNotes,
   addNote,
+  searchNotes,
 };

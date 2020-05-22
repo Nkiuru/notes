@@ -103,3 +103,22 @@ export const addNote = (title, content) => {
     throw error;
   });
 };
+
+
+export const searchNote = (search) => {
+  const token = localStorage.getItem('token');
+  const authorization = token ? `Bearer ${token}` : '';
+  const body = { search };
+  return fetch('http://localhost:8000/notes/search', {
+    method: 'POST',
+    headers: {
+      authorization,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body),
+  }).then(response => {
+    return response.json();
+  }).catch(error => {
+    throw error;
+  });
+};

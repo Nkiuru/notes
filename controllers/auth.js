@@ -21,11 +21,11 @@ const login = (req, res) => {
 };
 
 const signup = (req,res) => {
-  const {name, email, password} = req.body;
+  const {name, email, password, isAdmin} = req.body;
   if (!name || !email || !password) {
     res.status(400).send({ message: 'Missing fields' });
   } else {
-    connection.query('INSERT INTO user(id, name, email, password) VALUES (0, ?, ?, ?)', [name, email, password], (err, results, fields) => {
+    connection.query('INSERT INTO user(id, name, email, password, isAdmin) VALUES (0, ?, ?, ?, ?)', [name, email, password, isAdmin], (err, results, fields) => {
       if (err) res.status(500).send(err.code);
       if (results) res.send({id: results.insertId });
     });

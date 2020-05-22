@@ -7,7 +7,9 @@ router.get('/my', noteController.getMyNotes);
 
 router.get('/all', noteController.getAllNotes);
 
-router.post('/', noteController.addNote)
+router.post('/search', noteController.searchNotes);
+
+router.post('/', noteController.addNote);
 
 
 module.exports = router;

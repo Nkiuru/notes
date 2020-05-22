@@ -32,7 +32,7 @@ const Input = styled.input`
 
 export default props => {
   return (
-    <Field>
+    <Field style={props.style}>
       <Label>{props.label}</Label>
       <Input type={props.type} value={props.value} onChange={props.onChange} />
     </Field>

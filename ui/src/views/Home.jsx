@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
-import { addNote, getNotes } from '../api';
+import { addNote, getNotes, searchNote } from '../api';
 import { FlexColumn } from './Login';
 
 import { Wrapper, SectionTitle, NoteCard, NoteHeader } from '../components/Misc';
@@ -57,6 +57,7 @@ export default () => {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [search, setSearch] = useState('');
   const getData = async () => {
     try {
       const response = await getNotes();
@@ -73,6 +74,15 @@ export default () => {
     try {
       const response = await addNote(title, content);
       getData();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleSearch = async () => {
+    try {
+      const response = await searchNote(search);
+      setNotes(response);
     } catch (e) {
       console.error(e);
     }
@@ -99,6 +109,10 @@ export default () => {
         </FlexColumn>
         <Button type="submit" text="Add note" onClick={handleAddNote} />
       </Wrapper>
+      <Row>
+        <Input style={{width:'80%'}} type="text" label="Search" onChange={e => setSearch(e.target.value)} value={search} />
+        <Button style={{marginTop:'36px'}} type="submit" text="Search" onClick={handleSearch} />
+      </Row>
       <Wrapper>
         <SectionTitle>Notes</SectionTitle>
         {notes.map(note => (
