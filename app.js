@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('./utils/db');
 const authRoutes = require('./routes/authRoutes');
 const noteRoutes = require('./routes/noteRoutes');
+const userRoutes = require('./routes/userRoutes');
 const passport = require('passport');
 const cors = require('cors');
 require('./utils/pass.js');
@@ -14,7 +15,7 @@ app.use(express.static('public'));
 
 app.use('/auth', authRoutes);
 app.use('/notes', passport.authenticate('jwt', { session: false }), noteRoutes);
-
+app.use('/users', passport.authenticate('jwt', { session: false }), userRoutes);
 
 
 app.listen(8000, () => {

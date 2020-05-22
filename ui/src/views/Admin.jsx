@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { SectionTitle, ViewTitle, NoteCard, NoteHeader, Wrapper } from '../components/Misc';
 import { dummyNotes } from './Home';
+import { getAllNotes, getUsers } from '../api';
 
 const UsersList = styled.ul`
   padding: 0;
@@ -19,6 +20,10 @@ const UsersList = styled.ul`
       background-color: #f3f3f3;
     }
   }
+`;
+
+const Col = styled.span`
+  width:25%;
 `;
 
 const dummyUsers = [
@@ -49,24 +54,53 @@ const dummyUsers = [
 ];
 
 export default () => {
+  const [notes, setNotes] = useState([]);
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getUsers();
+        setUsers(response);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    const fetchNotes = async () => {
+      try {
+        const response = await getAllNotes();
+        setNotes(response);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchNotes();
+    fetchUsers();
+  }, []);
   return (
     <div>
       <ViewTitle>Admin</ViewTitle>
       <Wrapper>
         <SectionTitle>All Users</SectionTitle>
         <UsersList>
-          {dummyUsers.map(user => (
-            <li>
-              <span>{user.name}</span>
-              <span>{user.email}</span>
-              <span>{user.isAdmin ? 'Admin' : ''}</span>
+          <li style={{fontWeight: 'bold', borderBottom: '1px solid black'}}>
+            <Col>id</Col>
+            <Col>name</Col>
+            <Col>email</Col>
+            <Col>Admin</Col>
+          </li>
+          {users.map(user => (
+            <li key={user.id}>
+              <Col>{user.id}</Col>
+              <Col>{user.name}</Col>
+              <Col>{user.email}</Col>
+              <Col>{user.isAdmin ? 'Admin' : ''}</Col>
             </li>
           ))}
         </UsersList>
       </Wrapper>
       <Wrapper>
         <SectionTitle>All Notes</SectionTitle>
-        {dummyNotes.map(note => (
+        {notes.map(note => (
           <NoteCard key={note.id}>
             <NoteHeader>
               <div>

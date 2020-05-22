@@ -31,6 +31,13 @@ const Label = styled.label`
   color: #383838;
 `;
 
+const Row = styled.div`
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items:center;
+`;
+
 export const dummyNotes = [
   {
     id: 1,
@@ -53,7 +60,6 @@ export default () => {
   const getData = async () => {
     try {
       const response = await getNotes();
-      console.log(response);
       setNotes(response);
     } catch (e) {
       console.error(e);
@@ -72,12 +78,18 @@ export default () => {
     }
   };
 
-  // let username = JSON.parse(localStorage.getItem('user')).name;
-  const username = 'Anon';
+  const user = JSON.parse(localStorage.getItem('user'));
 
   return (
     <div>
-      <h1 style={{ marginBottom: '16px' }}>Hello {username}</h1>
+      <Row>
+        <h1 style={{ marginBottom: '16px' }}>Hello {user.name}</h1>
+        {user.isAdmin && (
+          <Link to="/admin">
+            <Button text="Admin panel"/>
+          </Link>
+        )}
+      </Row>
       <Wrapper>
         <SectionTitle>Create A Note</SectionTitle>
         <Input type="text" label="Title" onChange={e => setTitle(e.target.value)} value={title} />
@@ -89,7 +101,7 @@ export default () => {
       </Wrapper>
       <Wrapper>
         <SectionTitle>Notes</SectionTitle>
-        {dummyNotes.map(note => (
+        {notes.map(note => (
           <NoteCard key={note.id}>
             <NoteHeader>
               <div>
